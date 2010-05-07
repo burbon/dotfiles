@@ -1,0 +1,11 @@
+shell -bash
+altscreen on
+
+caption always "%{= gk}%-Lw%{= Yk}%50> %n%f* %t %{-}%+Lw%< %= %{= Gk} %H %{= rW} %l %{= Gk} %0c %d/%m %{-}"
+
+defscrollback 1500
+
+vbell off
+autodetach on
+verbose on
+
