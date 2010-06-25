@@ -1,3 +1,6 @@
+defutf8 on
+startup_message off
+
 shell -bash
 altscreen on
 
