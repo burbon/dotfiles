@@ -1,17 +1,41 @@
-Config { font = "-misc-terminus-medium-r-normal--0-0-0-0-p-0-*-*"
+Config { font = "-*-terminus-medium-*-*-*-*-140-*-*-*-*-*-*"
        , bgColor = "black"
        , fgColor = "grey"
        , position = TopW L 90
        , lowerOnStart = True
+--       , commands = [ Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 5
+--                    , Run Cpu ["-t", "Cpu: <total> Nice: <nice> Sys: <system>", "-L","10","-H","50","--normal","green","--high","red"] 5
+--                    , Run Memory ["-t","FMem: <free>"] 5
+--                    , Run Swap ["-t","USwap: <used>"] 5
+--                    , Run Date "%Y-%m-%d %H:%M:%S" "date" 10
+--                    , Run MPDInfo
+--                    , Run StdinReader
+--                    ]
        , commands = [ Run Weather "EPKK" ["-t"," <tempC>C","-L","10","-H","20","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                    Run Weather "EPKK" ["-t"," <tempC>C","-L","10","-H","20","--normal","green","--high","red","--low","lightblue"] 36000
+
+                    --, Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                    , Run Cpu ["-t", "Cpu: <total> Nice: <nice> Sys: <system>", "-L","10","-H","50","--normal","green","--high","red"] 5
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
-                    , Run Swap [] 10
-                    , Run Date "%a %b %_d %l:%M" "date" 10
+                    --, Run Memory ["-t","FMem: <free>"] 5
+                    --, Run Swap [] 10
+                    , Run Swap ["-t","USwap: <used>"] 5
+                    , Run Date "%a %d %b %H:%M" "date" 10
+                    --, Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                    , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                    --, Run Com "mpc | head -n1" [] "mpc" 10
+                    --, Run MPDInfo
+                    --, Run Com "df -h / | tail -n1 | cut -d' ' -f22 | cut -d% -f1" [] "disk" 10
+                    , Run CoreTemp [
+                         "-t","Temp:<core0>|<core1>C",
+                         "-L","40","-H","60",
+                         "-l","lightblue",
+                         "-n","gray90","-h","red"
+                    ] 50
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %memory% * %swap%    <fc=#ee9a00>%date%</fc> | %EPKK%"
+       , template = "%StdinReader% }{ %coretemp% | %cpu% | %memory% * %swap% | %wlan0% <fc=#ee9a00>%date%</fc> |%EPKK%"
        }
 

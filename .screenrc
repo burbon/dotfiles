@@ -1,14 +1,32 @@
 defutf8 on
-startup_message off
+hardstatus alwayslastline
 
-shell -bash
-altscreen on
-
-caption always "%{= gk}%-Lw%{= Yk}%50> %n%f* %t %{-}%+Lw%< %= %{= Gk} %H %{= rW} %l %{= Gk} %0c %d/%m %{-}"
-
-defscrollback 1500
+hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{+u w}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %d-%m %c ]%{W}'
+#hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %d-%m %c ]%{W}'
+#hardstatus string '%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<'
 
 vbell off
+startup_message off
+defscrollback 1024
+shell -$SHELL
+shelltitle sh
 autodetach on
+
+defmonitor on
+termcapinfo rxvt ti@:te@
+
+bindkey "^[w" prev
+bindkey "^[e" next
+
+
+#backtick 101 6 6 echo dupa
+#caption always 
+#caption string "%100`"
+
+#screen -t dupa
+#screen -t zupa
+#screen -t rn ssh bacbur@s.rootnode.net
+
+#sorendition "=b kw"
 verbose on
 
