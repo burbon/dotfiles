@@ -1,7 +1,7 @@
 colorscheme desert
 
 set encoding=utf-8
-set bomb
+" set bomb
 let python_highlight_all=1
 syntax on
 filetype indent on
@@ -21,10 +21,14 @@ set directory=/home/burb/.vim/tmp
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
+call pathogen#infect()
+
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1 
+
+let g:Perl_Perltidy = 'on'
 
 map <leader>r :execute 'NERDTreeToggle' <CR>
 map <leader>t :execute 'TlistToggle' <CR>
