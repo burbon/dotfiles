@@ -15,6 +15,9 @@ import XMonad.Util.EZConfig(additionalKeys)
 
 import System.IO
 
+import XMonad.Layout.LayoutScreens
+import XMonad.Layout.TwoPane
+
  
 myManageHook = composeAll
     [
@@ -25,17 +28,19 @@ myManageHook = composeAll
 
         className =? "Firefox" --> doShift "2",
         className =? "Opera" --> doShift "2",
-        className =? "Thunderbird" --> doShift "2",
+        className =? "Thunderbird" --> doShift "4",
 
         className =? "Pidgin" --> doShift "3",
-        className =? "Skype" --> doShift "4",
+        className =? "Skype" --> doShift "5",
 
-        className =? "Sonata" --> doShift "5",
+        className =? "Sonata" --> doShift "6",
 
-        className =? "Krusader" --> doShift "6",
+        className =? "Krusader" --> doShift "7",
 
-        className =? "MPlayer" --> doShift "7"
+        className =? "MPlayer" --> doShift "8"
     ]
+
+modm = mod1Mask
  
 --myLayoutHook = Full ||| Accordion
 
@@ -59,6 +64,9 @@ main = do
     } `additionalKeys`
         [
             ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock"),
-            ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s"),
-            ((0, xK_Print), spawn "scrot")
+            -- ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s"),
+            ((mod4Mask, xK_p), spawn "sleep 0.2; scrot -s"),
+            ((0, xK_Print), spawn "scrot"),
+            ((modm .|. shiftMask,                 xK_space), layoutScreens 2 (TwoPane 0.5 0.5)),
+            ((modm .|. controlMask .|. shiftMask, xK_space), rescreen)
         ]
