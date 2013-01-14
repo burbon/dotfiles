@@ -9,12 +9,17 @@ set autoindent
 " set foldmethod=indent
 set nu
 
-set shiftwidth=3
-set tabstop=3
+set shiftwidth=4
+set tabstop=4
 set expandtab
 
-set backupdir=/home/bc5042/.vim/backup
-set directory=/home/bc5042/.vim/tmp
+set hlsearch
+
+set backupdir=/home/burb/.vim/backup
+set directory=/home/burb/.vim/tmp
+
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
 
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1
@@ -27,6 +32,10 @@ map <leader>t :execute 'TlistToggle' <CR>
 map <leader>a :bp <CR>
 map <leader>d :bn <CR>
 map <leader>e :e# <CR>
+
+nnoremap ,ff :FufFile <cr>
+nnoremap ,fb :FufBuffer <cr>
+nnoremap ,fd :FufDir <cr>
 
 " vimrc file for following the coding standards specified in PEP 7 & 8.
 "
