@@ -1,11 +1,14 @@
-# start ssh-agent
-#eval $(ssh-agent)
+#
+# ~/.bashrc
+#
 
-# Check for an interactive session
-[ -z "$PS1" ] && return
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
+
+eval $(keychain  --eval --agents ssh --quiet -Q)
 
 # Reset
 Color_Off='\e[0m'       # Text Reset
@@ -88,6 +91,20 @@ export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 
+__perlbrew_list() {
+  out="$(perlbrew list 2>/dev/null)"
+  echo $out | grep \* | cut -c3-
+}
+
+__cmd_status() {
+  if [[ $? != 0 ]]; then
+    #echo [\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200
+    echo ZUPA
+  else
+    echo DUPA
+  fi
+}
+
 PS1='[\u@\h \W]\$ '
 
 PROMPT_COMMAND='DIR=`pwd|sed -e "s!$HOME!~!"`; if [ ${#DIR} -gt 30 ]; then CurDir=${DIR:0:12}...${DIR:${#DIR}-15}; else CurDir=$DIR; fi'
@@ -95,13 +112,25 @@ PROMPT_COMMAND='DIR=`pwd|sed -e "s!$HOME!~!"`; if [ ${#DIR} -gt 30 ]; then CurDi
 F_TIME="\[\033[00;36m\]\t\[\033[00;00m\]"
 F_NAME="\[\033[00;32m\]\u\[\033[00m\]@\[\033[00;33m\]\h\[\033[00;00m\]"
 F_DIR="\[\033[00;36m\]\$CurDir\[\033[00;00m\]"
-F_GIT_RAW='$(__git_ps1 " (%s)")'
-F_GIT="\[$Red\]$F_GIT_RAW\[$Color_Off\]"
+F_DIR_FULL="\[\033[00;36m\]\w\[\033[00;00m\]"
+F_GIT="\[$Red\]\$(__git_ps1 '%s')\[$Color_Off\]"
+F_PERLBREW="\$(__perlbrew_list)"
+__cmd_status() {
+  if [[ $? != 0 ]]; then
+    echo "\[$Red\]✗\[$Color_Off\]"
+  else
+    echo "\[$Green\]✓\[$Color_Off\]"
+  fi
+}
+F_OK="$(__cmd_status)"
+F_OK="\$(if [[ \$? != 0 ]]; then echo \"\[$Red\]✗\[$Color_Off\]\"; else echo \"\[$Green\]✓\[$Color_Off\]\"; fi)"
 
-PS1="┌─[$F_TIME]─[$F_NAME]─[$F_DIR]$F_GIT\n└─]\$ "
+PS1="┌─[$F_OK]─[$F_TIME]─[$F_NAME]─[$F_DIR_FULL]-[$F_GIT]-[$F_PERLBREW]\n└──╼ "
+PS2="╾──╼ "
 
 ########### END_PROMPT ############
 
+source $HOME/perl5/perlbrew/etc/bashrc
 export HISTCONTROL=ignoredups
 export EDITOR=vim
 export MPD_HOST="wpiszcos@localhost"
