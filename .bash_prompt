@@ -1,0 +1,45 @@
+source /usr/share/git/git-prompt.sh
+source .bash_colors
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWSTASHSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWUPSTREAM="auto"
+
+__perlbrew_list() {
+  out="$(perlbrew list 2>/dev/null)"
+  echo $out | grep \* | cut -c3-
+}
+
+__cmd_status() {
+  if [[ $? != 0 ]]; then
+    #echo [\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200
+    echo ZUPA
+  else
+    echo DUPA
+  fi
+}
+
+PS1='[\u@\h \W]\$ '
+
+PROMPT_COMMAND='DIR=`pwd|sed -e "s!$HOME!~!"`; if [ ${#DIR} -gt 30 ]; then CurDir=${DIR:0:12}...${DIR:${#DIR}-15}; else CurDir=$DIR; fi'
+
+F_TIME="\[$Cyan\]\t\[$Color_Off\]"
+F_NAME="\[$Green\]\u\[$Color_Off\]@\[$Yellow\]\h\[$Color_Off\]"
+F_DIR="\[\$Cyan\]\$CurDir\[$Color_Off\]"
+F_DIR_FULL="\[$Cyan\]\w\[$Color_Off\]"
+F_GIT="\[$Red\]\$(__git_ps1 '%s')\[$Color_Off\]"
+F_PERLBREW="\$(__perlbrew_list)"
+__cmd_status() {
+  if [[ $? != 0 ]]; then
+    echo "\[$Red\]✗\[$Color_Off\]"
+  else
+    echo "\[$Green\]✓\[$Color_Off\]"
+  fi
+}
+F_OK="$(__cmd_status)"
+F_OK="\$(if [[ \$? != 0 ]]; then echo \"\[$Red\]✗\[$Color_Off\]\"; else echo \"\[$Green\]✓\[$Color_Off\]\"; fi)"
+
+PS1="┌─[$F_OK]─[$F_TIME]─[$F_NAME]─[$F_DIR_FULL]-[$F_GIT]-[$F_PERLBREW]\n└──╼ "
+PS2="╾──╼ "
+
