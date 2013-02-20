@@ -7,3 +7,5 @@
     st = status
 [color]
     ui = true
+[core]
+    editor = vim
