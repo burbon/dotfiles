@@ -13,11 +13,12 @@ eval $(keychain --eval --agents ssh --quiet -Q)
 export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
 export LESS=' -R '
 
+export EDITOR=vim
+
 source $HOME/perl5/perlbrew/etc/bashrc
 export HISTCONTROL=ignoredups
-export EDITOR=vim
 export MPD_HOST="wpiszcos@localhost"
 
 export PATH=$HOME/bin:$PATH
 
-source .bash_prompt
+source $HOME/.bash_prompt

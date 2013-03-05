@@ -1,5 +1,5 @@
 source /usr/share/git/git-prompt.sh
-source .bash_colors
+source $HOME/.bash_colors
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
