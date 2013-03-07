@@ -7,6 +7,13 @@ setxkbmap -layout pl
 #setxkbmap -model dell -layout pl &
 
 #xsetroot -solid midnightblue
+
+# set cursor
+xsetroot -cursor_name left_ptr
+
+# load key bind mods
+xmodmap $HOME/.Xmodmap
+
 #feh --bg-seamless ~/.themes/Since1975.png &
 trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 5 --transparent true --tint 0 --height 12 --margin 0 &
 #gnome-screensaver &
