@@ -7,8 +7,10 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 
 __perlbrew_list() {
-  out="$(perlbrew list 2>/dev/null)"
-  echo $out | grep \* | cut -c3-
+  #out="$(perlbrew list 2>/dev/null)"
+  #echo $out | grep \* | cut -c3-
+  out=`perlbrew use | perl -ne '/Currently using (.*)/; print $1'`
+  echo $out
 }
 
 __cmd_status() {
@@ -29,7 +31,7 @@ F_NAME="\[$Green\]\u\[$Color_Off\]@\[$Yellow\]\h\[$Color_Off\]"
 F_DIR="\[\$Cyan\]\$CurDir\[$Color_Off\]"
 F_DIR_FULL="\[$Cyan\]\w\[$Color_Off\]"
 F_GIT="\[$Red\]\$(__git_ps1 '%s')\[$Color_Off\]"
-F_PERLBREW="\$(__perlbrew_list)"
+F_PERLBREW="\[$Red\]\$(__perlbrew_list)\[$Color_Off\]"
 __cmd_status() {
   if [[ $? != 0 ]]; then
     echo "\[$Red\]✗\[$Color_Off\]"
