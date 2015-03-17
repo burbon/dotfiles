@@ -1,6 +1,6 @@
 [user]
-	email = blazej.cegielka@gmail.com
-	name = Błażej Cegiełka
+    email = blazej.cegielka@gmail.com
+    name = Błażej Cegiełka
 [alias]
     ci = commit
     co = checkout
