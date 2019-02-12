@@ -1,133 +1,275 @@
-colorscheme desert
+" Define autocmd group vimrc.
+augroup myvimrc
+  autocmd!
+augroup END
 
+set rtp+=~/.vim/bundle/Vundle.vim
+
+filetype off
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+" Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tomasr/molokai'
+" Plugin 'bling/vim-airline'
+" Plugin 'edkolev/tmuxline.vim'
+" Plugin 'vim-airline/vim-airline-themes'
+Plugin 'powerline/powerline'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-dispatch'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Yggdroot/indentLine'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'klen/python-mode'
+Plugin 'ervandew/supertab'
+Plugin 'scrooloose/nerdtree'
+Plugin 'SirVer/ultisnips'
+"Plugin 'fatih/vim-go'
+
+call vundle#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
+
+
+" Vim-Tmux-Navigator
+"let g:tmux_navigator_no_mappings = 1
+
+" Airline
+let g:airline_theme = "powerlineish"
+let g:airline_powerline_fonts = 1
+
+" Supertab
+let g:SuperTabDefaultCompletionType = "<C-n>"
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-tab>"
+let g:UltiSnipsSnippetDir="~/.vim/UltiSnips"
+
+" Pymode
+let g:pymode_rope = 0
+let g:pymode_folding = 0
+let g:pymode_lint_unmodified = 1
+let g:pymode_lint_checkers = ['pep8', 'pyflakes']
+
+" CtrlP Settings
+let g:ctrlp_max_height = 10
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+
+" Jedi-vim
+let g:jedi#use_splits_not_buffers = "right"
+
+"Disptach
+autocmd myvimrc FileType python let b:dispatch = 'py.test %'
+nnoremap <F9> :Dispatch<CR>
+nnoremap <F10> :Dispatch python %<CR>
+
+" Toggle NERDTree hotkey
+map <F2> :NERDTreeToggle<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let mapleader=','
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :vsplit $MYVIMRC<CR>
+nmap <silent> <leader>et :vsplit ~/.tmux.conf<CR>
+nmap <silent> <leader>ed :vsplit ~/.bash_profile<CR>
+nmap <silent> <leader>r :so $MYVIMRC<CR>
+
+" CLI/ GUI settings
+if has("gui_running")
+    " Start window maximized
+    set lines=999 columns=999
+    " Fix Powerline icons for the GUI
+    set guifont=Inconsolata\ for\ Powerline:h15
+else
+    " Fix molokai color schema for the CLI
+    set term=xterm-256color
+    let g:rehash256 = 1
+endif
+
+" Vim, not vi
+set nocompatible
+
+" Show the command shortcut in the status line
+set showcmd
+
+" Optimize redrawing (improves speed)
+set lazyredraw
+set ttyfast
+
+" Raise a dialogue for saving changes
+set confirm
+
+" Enable file type detection and plugin loading
+filetype plugin indent on
+
+" Use Unix as the standard file type
+set ffs=unix,mac,dos
+
+" Set output encoding
 set encoding=utf-8
-" set bomb
-let python_highlight_all=1
-syntax on
-filetype indent on
-set autoindent
-" set foldmethod=indent
-set nu
 
-set shiftwidth=4
+" Autoupdate file changes made outside vim
+set autoread
+
+" Set filetype specific options via modelines
+set modeline
+
+" Disable backups
+set nobackup
+set noswapfile
+set nowritebackup
+
+" Always display the status line, even if only one window is displayed
+set laststatus=2
+
+" Ignore these files
+set wildignore+=*.pyc,*_build/*,*/coverage/*
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Colorscheme
+try
+    colors molokai
+catch
+endtry
+
+" Enable syntax highlighing
+syntax enable
+
+" Open splitpanes below and on the right of the current one.
+set splitbelow
+set splitright
+
+" Toggle highlighting current line only in active splits
+autocmd myvimrc VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+autocmd myvimrc WinLeave * setlocal nocursorline
+
+" Highlight current line
+set cursorline 
+
+" Line numbers
+set number
+set relativenumber
+map <F4> :set relativenumber!<CR>
+map! <F4> <Esc>:set relativenumber!<CR>gi
+
+" Regex and search options
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set magic
+
+" Temporary turn off hlsearch
+nnoremap <silent> <leader><CR> :noh<CR>
+
+" Save files
+nmap <leader>w :w<CR>
+imap <leader>w <Esc>:w<CR>gi
+vmap <leader>w <Esc>:w<CR>gv
+
+" Close files (will raise confirmation dialog for unsaved changes)
+nmap <leader>q :q<CR>
+imap <leader>q <Esc>:q<CR>gi
+vmap <leader>q <Esc>:q<CR>gv
+
+" Visual autocomplete for command menu
+set wildmenu
+" First tab will complete to the longest common string 
+set wildmode=longest:full,full
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text and formatting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" Use 4 spaces instead of tabs
 set tabstop=4
+set shiftwidth=4
 set expandtab
 
-set hlsearch
+" Use 2 spaces instead of tabs for HTML and YAML files
+autocmd myvimrc FileType html,yaml setlocal shiftwidth=2 tabstop=2
 
-set backupdir=/home/burb/.vim/backup
-set directory=/home/burb/.vim/tmp
+" Wrap lines to 72 characters in git commit messages and use 2 spaces for tab
+autocmd myvimrc FileType gitcommit setlocal spell textwidth=72 shiftwidth=2 tabstop=2
 
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+" Don't leave space between joined lines
+set nojoinspaces
 
-call pathogen#infect()
+" Fix identation when pasting in Insert mode
+set pastetoggle=<F3>
 
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1 
+" Sort lines alphabetically (useful for sorting Python imports)
+vnoremap <leader>s :sort<CR>
 
-let g:Perl_Perltidy = 'on'
+" Go back to visual mode after reindenting
+vnoremap < <gv
+vnoremap > >gv
 
-map <leader>r :execute 'NERDTreeToggle' <CR>
-map <leader>t :execute 'TlistToggle' <CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Navigation and moving around
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <leader>a :bp <CR>
-map <leader>d :bn <CR>
-map <leader>e :e# <CR>
+" Exit insert mode with jj
+inoremap jj <Esc>
 
-nnoremap ,ff :FufFile <cr>
-nnoremap ,fb :FufBuffer <cr>
-nnoremap ,fd :FufDir <cr>
+" Go to the next line in editor for wrapped lines
+nnoremap j gj
+nnoremap k gk
 
-" vimrc file for following the coding standards specified in PEP 7 & 8.
-"
-" To use this file, source it in your own personal .vimrc file (``source
-" <filename>``) or, if you don't have a .vimrc file, you can just symlink to it
-" (``ln -s <this file> ~/.vimrc``).  All options are protected by autocmds
-" (read below for an explanation of the command) so blind sourcing of this file
-" is safe and will not affect your settings for non-Python or non-C files.
-"
-"
-" All setting are protected by 'au' ('autocmd') statements.  Only files ending
-" in .py or .pyw will trigger the Python settings while files ending in *.c or
-" *.h will trigger the C settings.  This makes the file "safe" in terms of only
-" adjusting settings for Python and C files.
-"
-" Only basic settings needed to enforce the style guidelines are set.
-" Some suggested options are listed but commented out at the end of this file.
+"Easier navigation through split windows
+nnoremap <C-j> <C-w><Down>
+nnoremap <C-k> <C-w><Up>
+nnoremap <C-l> <C-w><Right>
+nnoremap <C-h> <C-w><Left>
 
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
-" Number of spaces to use for an indent.
-" This will affect Ctrl-T and 'autoindent'.
-" Python: 4 spaces
-" C: 8 spaces (pre-existing files) or 4 spaces (new files)
-au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
-au BufRead *.c,*.h set shiftwidth=8
-au BufNewFile *.c,*.h set shiftwidth=4
+" We say 'NO' to arrow keys
+nnoremap <Up> <NOP>
+nnoremap <Down> <NOP>
+nnoremap <Left> <NOP>
+nnoremap <Right> <NOP>
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
 
-" Number of spaces that a pre-existing tab is equal to.
-" For the amount of space used for a new tab use shiftwidth.
-" Python: 8
-" C: 8
-au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
 
-" Replace tabs with the equivalent number of spaces.
-" Also have an autocmd for Makefiles since they require hard tabs.
+" Remap 0 to go to first non-blank character of the line
+map 0 ^
 
-" Python: yes
-" C: no
-" Makefile: no
-au BufRead,BufNewFile *.py,*.pyw set expandtab
-au BufRead,BufNewFile *.c,*.h set noexpandtab
-au BufRead,BufNewFile Makefile* set noexpandtab
-
-" Use the below highlight group when displaying bad whitespace is desired
-highlight BadWhitespace ctermbg=red guibg=red
-
-" Display tabs at the beginning of a line in Python mode as bad.
-au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-" Make trailing whitespace be flagged as bad.
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-" Wrap text after a certain number of characters
-" Python: 79 
-" C: 79
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h set textwidth=79
-
-" Turn off settings in 'formatoptions' relating to comment formatting.
-" - c : do not automatically insert the comment leader when wrapping based on
-"    'textwidth'
-" - o : do not insert the comment leader when using 'o' or 'O' from command mode
-" - r : do not insert the comment leader when hitting <Enter> in insert mode
-" Python: not needed
-" C: prevents insertion of '*' at the beginning of every line in a comment
-au BufRead,BufNewFile *.c,*.h set formatoptions-=c formatoptions-=o formatoptions-=r
-
-" Use UNIX (\n) line endings.
-" Only used for new files so as to not force existing files to change their
-" line endings.
-" Python: yes
-" C: yes
-au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
-
-
-" ----------------------------------------------------------------------------
-" The following section contains suggested settings.  While in no way required
-" to meet coding standards, they are helpful.
-
-" Set the default file encoding to UTF-8: ``set encoding=utf-8``
-
-" Puts a marker at the beginning of the file to differentiate between UTF and
-" UCS encoding (WARNING: can trick shells into thinking a text file is actually
-" a binary file when executing the text file): ``set bomb``
-
-" For full syntax highlighting:
-"``let python_highlight_all=1``
-"``syntax on``
-
-" Automatically indent based on file type: ``filetype indent on``
-" Keep indentation level from previous line: ``set autoindent``
-
-" Folding based on indentation: ``set foldmethod=indent``
+" Remap Y to apply till EOL, just like D and C.
+map Y y$
